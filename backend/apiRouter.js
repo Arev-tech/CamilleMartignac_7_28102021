@@ -1,9 +1,9 @@
 // Imports
-const express      = require('express');
-const multer = require('multer');
+const express = require('express');
 const usersCtrl    = require('./routes/usersCtrl');
 const messagesCtrl = require('./routes/messagesCtrl');
 const commentairesCtrl = require('./routes/commentairesCtrl');
+const multer = require('./middleware/multer');
 const auth = require('./middleware/auth');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -21,7 +21,7 @@ exports.router = (function() {
   apiRouter.route('/users/me/').delete(auth, usersCtrl.deleteProfile);
 
   // Messages routes
-  apiRouter.route('/messages/new/').post(auth, messagesCtrl.createMessage);
+  apiRouter.route('/messages/new/').post(auth, multer, messagesCtrl.createMessage);
   apiRouter.route('/messages/').get(auth, messagesCtrl.getAllMessages);
   apiRouter.route('/messages/me/').get(messagesCtrl.getOneMessage);
   apiRouter.route('/messages/me/').put(auth, multer, messagesCtrl.updateMessage);

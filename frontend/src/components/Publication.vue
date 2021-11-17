@@ -4,6 +4,7 @@
       <h2 class="card-title">{{ message.title }}</h2>
       <h6 class="card-subtitle mb-2 text-muted">{{ message.User.username }}</h6>
       <p class="card-text">{{ message.content }}</p>
+      <img :src="message.attachment" alt="gif">
       <div class="card-footer text-muted">Voir les commentaires</div>
     </a>
   </div>
@@ -34,6 +35,7 @@ export default {
     })
     .catch(function(err) {
       console.log(err);
+      alert(err);
     });
   },
   methods: {

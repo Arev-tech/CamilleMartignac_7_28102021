@@ -250,37 +250,35 @@ module.exports = {
     },
     deleteProfile: function(req, res) {
         // Getting auth header
-        const userId = req.body.id;
+        var headerAuth = req.headers['authorization'];
+        const userId = jwtUtils.getUserId(headerAuth);
 
         models.Commentaire.destroy({ 
             where : { 
                 userId : userId 
             }
         })
-        .then(function(commentairesDestroy) {
-            const filename = sauce.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => {
-                models.Message.destroy({ 
-                    where : { 
-                        userId : userId
-                    }
+        .then(function() {
+            models.Message.destroy({ 
+                where : { 
+                    userId : userId
+                }
+            })
+            .then(function() {
+                models.User.destroy({ 
+                    where :{ 
+                        id: userId 
+                    } 
                 })
                 .then(function() {
-                    models.User.destroy({ 
-                        where :{ 
-                            id: userId 
-                        } 
-                    })
-                    .then(function() {
-                        res.status(200).json({ 'message': 'user supprimé' });
-                    })
-                    .catch(function(err) {
-                        res.status(400).json({ 'error': 'cannot delete user' });
-                    });
+                    res.status(200).json({ 'message': 'user supprimé' });
                 })
                 .catch(function(err) {
-                    res.status(400).json({ 'error': 'cannot delete messages' });
+                    res.status(400).json({ 'error': 'cannot delete user' });
                 });
+            })
+            .catch(function(err) {
+                res.status(400).json({ 'error': 'cannot delete messages' });
             });
         })
         .catch(function(err) {

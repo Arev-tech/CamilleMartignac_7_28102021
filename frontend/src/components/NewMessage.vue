@@ -7,7 +7,7 @@
       <textarea required class="input" type="text" v-model="content" placeholder="Exprimez-vous" id="content"></textarea>
     </div>
     <div class="row justify-content-center">
-      <v-text-field class="input" label="fichier" filled auto-grow v-model="attachment" id="attachment"></v-text-field>
+      <input required autofocus class="file" type="file" name="uploadFile" accept=".gif" id="file" placeholder="File">
     </div>
     <div class="row justify-content-center">
       <button @click="CreateMessage" class="btn">Publier</button>
@@ -25,15 +25,15 @@ export default {
     return {
         content: '',
         title: '',
-        attachment: '',
     }
   },
   methods: {
     CreateMessage: function() {
+        const file = document.getElementById("file").value;
         var data = qs.stringify({
         'title': this.title,
         'content': this.content,
-        'attachment': this.attachment,
+        'attachment': file
         });
         
         var config = {
@@ -54,6 +54,7 @@ export default {
         })
         .catch(function (error) {
             console.log(error);
+            alert(error);
         });
 
     }
@@ -75,6 +76,9 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.file{
+  background-color: white;
 }
 label {
   color: white;

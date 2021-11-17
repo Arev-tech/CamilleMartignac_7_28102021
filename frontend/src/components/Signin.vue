@@ -55,15 +55,16 @@
         })
         .then(function(res) {
           localStorage.setItem('token', res.data.token);
-          console.log(res);
+          localStorage.setItem('userId', res.data.userId);
           router.push('/feed');
         })
         .catch(function(err) {
           console.log(err);
+          alert(err);
         });
       }
+      }
     }
-  }
 </script>
 
 <style scoped>

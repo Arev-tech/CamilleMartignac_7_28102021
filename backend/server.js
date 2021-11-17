@@ -33,8 +33,7 @@ server.use('/api/', apiRouter);
 
 // Sécurisation contre les essais multiples de connexions
 server.use('/api/auth', limiteur);
-server.use('./files', express.static(path.join(__dirname, './files')));
-
+server.use('/files', express.static(path.join(__dirname, '/files')));
 // Launch server
 server.listen(3000, function() {
     console.log('Server listen on port 3000');

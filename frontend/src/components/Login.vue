@@ -1,6 +1,9 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
+      <p> {{ error }} </p>
+    </div>
+    <div class="row justify-content-center">
       <label class="label" for="email">Saisissez votre adresse email :</label><br>
       <input required autofocus class="input" type="email" v-model="email" id="email" placeholder="Email">
     </div>
@@ -24,6 +27,7 @@
       return {
         email: '',
         password: '',
+        error: this.error,
       }
     },
     computed: {
@@ -43,10 +47,12 @@
         })
         .then(function(res) {
           localStorage.setItem('token', res.data.token);
+          localStorage.setItem('userId', res.data.userId);
           router.push('/feed');
         })
         .catch(function(err) {
           console.log(err);
+          alert(err);
         });
       }
     }

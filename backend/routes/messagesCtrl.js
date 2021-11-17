@@ -2,6 +2,7 @@
 const models = require('../models');
 const asyncLib = require('async');
 const jwtUtils = require('../utils/jwt.utils');
+const fs = require('fs');
 
 const ITEMS_LIMIT   = 50;
 
@@ -69,27 +70,50 @@ module.exports = {
         });
     },
     updateMessage : function(req,res) {
+        // Authorization
+        var headerAuth = req.headers['authorization'];
+        var userId = jwtUtils.getUserId(headerAuth);
+
         const title = req.body.title;
         const content = req.body.content;
         const messageId = req.body.id;
+        let imageUrl = '';
 
         models.Message.findOne({
-            attributes : ['title', 'content', 'id'],
+            attributes : ['title', 'content', 'id', 'attachment'],
             where : { id: messageId }
         })
         .then(function(messageFound) {
             if(messageFound) {
-                messageFound.update({
-                    title : (title ? title: messageFound.title),
-                    content: (content ? content: messageFound.content)
-                })
-                .then(function(messageFound) {
-                    return res.status(201).json({ messageFound });
-                })
-                .catch(function(err) {
-                    return res.status(500).json({ 'error' : 'cannot update message' });
-                });
-            } else {
+                if(userId == messageFound.userId) {
+                    if (req.file) {
+                        newImageUrl = `${req.protocol}://${req.get("host")}/files/${
+                          req.file.filename
+                        }`;
+                        if (messageFound.attachment) {
+                            const filename = messageFound.attachment.split("/files")[1];
+                            fs.unlink(`files/${filename}`, (err) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log(`Deleted file: files/${filename}`);
+                            }
+                            })
+                        }
+                    }
+                    messageFound.update({
+                        title : (title ? title: messageFound.title),
+                        content: (content ? content: messageFound.content)
+                    })
+                    .then(function(messageFound) {
+                        return res.status(201).json({ messageFound });
+                    })
+                    .catch(function(err) {
+                        return res.status(500).json({ 'error' : 'cannot update message' });
+                    });
+                }
+            }
+            else {
                 return res.status(404).json({ 'error' : 'cannot update message' });
             }
         })
@@ -105,13 +129,12 @@ module.exports = {
         // Params
         const title = req.body.title;
         const content = req.body.content;
-        const imageUrl = null;
+        let imageUrl;
 
-        if (req.file) {
-            imageUrl = `${req.protocol}://${req.get("host")}/api/upload/${
-                req.file.filename
-            }`;
-        }       
+        if (req.body.attachment) {
+            imageUrl = `${req.protocol}://localhost:8080/files/${req.body.attachment}`;
+            console.log(imageUrl);
+        }
         if (title == null || content == null) {
             return res.status(400).json({
                 'error': 'missing parameters'

@@ -17,6 +17,8 @@
 
 <script>
 import axios from 'axios';
+import router from '@/router/index';
+
 export default {
     name: 'Profile',
     data: function() {
@@ -46,9 +48,11 @@ export default {
         })
         .then(data => {
           console.log(data);
+          router.push('/');
         })
         .catch(function(err) {
           console.log(err);
+          alert(err);
         });
       }
     }

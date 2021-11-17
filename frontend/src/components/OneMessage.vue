@@ -4,18 +4,19 @@
     <div class="card-body">
       <h2 class="card-title">{{ message.User.username }} a publié : {{ message.title }}</h2>
       <p class="card-text">{{ message.content }}</p>
+      <img :src="message.attachment" alt="gif">
       <div class="card-footer text-muted" v-for="commentaire in commentaires" :key="commentaire.id">
         <p>{{ commentaire.User.username }} a commenté : {{ commentaire.Commentaire }} </p>
       </div>
     </div>
     <input type="text" class="input IWB" v-model="commentaire" placeholder="Exprimez-vous">
     <input type="button" @click="newCommentaire" value="Envoyez votre commentaire">
+    <button @click="deleteMessage" class="btn btn-danger" :class="{'disabled' : !isOwner}">Supprimer ce message</button>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import router from '@/router/index';
 import qs from 'qs';
 export default { 
   name: 'OneMessage',
@@ -23,6 +24,20 @@ export default {
     return {
       message : JSON.parse(localStorage.getItem('OneMessage')),
       commentaires: [],
+    }
+  },
+  computed: {
+    isOwner: function() {
+        const userId = localStorage.getItem('userId');
+        const message = JSON.parse(localStorage.getItem('OneMessage'));
+        console.log(message.User.id);
+        const messageUserId = message.User.id;
+        if(userId == messageUserId) {
+          return true;
+        }
+        else {
+          return false;
+        }
     }
   },
   mounted: function() {
@@ -43,14 +58,12 @@ export default {
       .then(function (response) {
         const message = response.data;
         localStorage.setItem('OneMessage', JSON.stringify(message));
-        router.go('/message');
       })
       .catch(function (error) {
         console.log(error);
       });
     },
     newCommentaire : function() {
-      console.log(this.commentaire);
       var data = qs.stringify({
         'messageId': localStorage.getItem('messageId'),
         'commentaire': this.commentaire,
@@ -68,10 +81,11 @@ export default {
       axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
-        //router.push('/feed');
+        window.location.reload();
       })
       .catch(function (error) {
         console.log(error);
+        alert(error);
       });
     },
     getAllCommentaires: function() {
@@ -91,6 +105,7 @@ export default {
       })
       .catch(function (error) {
         console.log(error);
+        alert(error);
       });
     }
   }
