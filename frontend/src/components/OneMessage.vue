@@ -15,6 +15,7 @@
 
 <script>
 import axios from 'axios';
+import router from '@/router/index';
 import qs from 'qs';
 export default { 
   name: 'OneMessage',
@@ -42,6 +43,7 @@ export default {
       .then(function (response) {
         const message = response.data;
         localStorage.setItem('OneMessage', JSON.stringify(message));
+        router.go('/message');
       })
       .catch(function (error) {
         console.log(error);

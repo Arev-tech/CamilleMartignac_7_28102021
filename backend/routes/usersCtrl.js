@@ -83,18 +83,19 @@ module.exports = {
                     })
                     .catch(function(err) {
                         return res.status(500).json({
-                            'error': 'cannot add user'
+                            err
                         });
                     });
             }
-        ], function(newUser) {
-            if (newUser) {
-                return res.status(201).json({
-                    'userId': newUser.id
+        ], function(userFound) {
+            if (userFound) {
+                return res.status(200).json({
+                    'userId': userFound.id,
+                    'token': jwtUtils.generateTokenForUser(userFound)
                 });
             } else {
                 return res.status(500).json({
-                    'error': 'cannot add user'
+                    'error': 'cannot create user'
                 });
             }
         });

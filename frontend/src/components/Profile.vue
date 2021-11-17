@@ -9,6 +9,9 @@
     <div class="row justify-content-center">
       <p>Votre bio : <strong>{{ user.bio }}</strong> </p>
     </div>
+    <div class="row justify-content-center">
+      <button @click="deleteAccount()" class ="btn btn-danger">Supprimer le compte</button>
+    </div>
   </div>
 </template>
 
@@ -22,17 +25,32 @@ export default {
         }
     },
     mounted: function() {
-        axios.get('http://localhost:3000/api/users/me', {
+      axios.get('http://localhost:3000/api/users/me', {
+      headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+      })
+      .then(data => {
+        this.user = data.data;
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+    },
+    methods: {
+      deleteAccount: function() {
+        axios.delete('http://localhost:3000/api/users/me', {
         headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token')
+          Authorization: 'Bearer ' + localStorage.getItem('token')
         }
         })
         .then(data => {
-        this.user = data.data;
+          console.log(data);
         })
         .catch(function(err) {
-        console.log(err);
+          console.log(err);
         });
+      }
     }
 }
 </script>

@@ -54,8 +54,9 @@
           bio: this.bio
         })
         .then(function(res) {
+          localStorage.setItem('token', res.data.token);
           console.log(res);
-          router.go('/feed');
+          router.push('/feed');
         })
         .catch(function(err) {
           console.log(err);
