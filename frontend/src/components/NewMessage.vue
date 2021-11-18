@@ -7,7 +7,7 @@
       <textarea required class="input" type="text" v-model="content" placeholder="Exprimez-vous" id="content"></textarea>
     </div>
     <div class="row justify-content-center">
-      <input required autofocus class="file" type="file" name="uploadFile" accept=".gif" id="file" placeholder="File">
+      <input required autofocus class="file" enctype="multipart/form-data"  type="file" name="attachment" id="file" placeholder="File">
     </div>
     <div class="row justify-content-center">
       <button @click="CreateMessage" class="btn">Publier</button>
@@ -18,7 +18,7 @@
 <script>
 import axios from 'axios';
 import qs from 'qs';
-//import router from '@/router/index';
+import router from '@/router/index';
 export default { 
   name: 'NewMessage',
   data() {
@@ -48,6 +48,7 @@ export default {
         axios(config)
         .then(function () {
             alert('Message créé');
+            router.push('/feed');
         })
         .catch(function (error) {
             console.log(error);

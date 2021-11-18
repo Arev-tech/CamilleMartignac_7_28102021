@@ -194,8 +194,8 @@ module.exports = {
          // Getting auth header
         var headerAuth = req.headers['authorization'];
         const userId = jwtUtils.getUserId(headerAuth);
+
         const messageId = req.body.messageId;
-        console.log(messageId);
         models.Commentaire.destroy({
             where: { 
                 messageId : messageId 
