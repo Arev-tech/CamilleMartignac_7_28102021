@@ -132,7 +132,7 @@ module.exports = {
         let imageUrl;
 
         if (req.body.attachment) {
-            imageUrl = `${req.protocol}://localhost:8080/files/${req.body.attachment}`;
+            imageUrl = `${req.protocol}://${req.get("host")}/images/${req.body.attachment}`;
             console.log(imageUrl);
         }
         if (title == null || content == null) {
@@ -189,5 +189,34 @@ module.exports = {
                 });
             }
         });
+    },
+    deleteMessage: function(req, res) {
+         // Getting auth header
+        var headerAuth = req.headers['authorization'];
+        const userId = jwtUtils.getUserId(headerAuth);
+        const messageId = req.body.messageId;
+        console.log(messageId);
+        models.Commentaire.destroy({
+            where: { 
+                messageId : messageId 
+            }
+        })
+        .then(function() {
+            models.Message.destroy({
+                where : {
+                    id : messageId
+                }
+            })
+            .then(function() {
+                res.status(200).json({ 'message' : 'message supprimé'});
+            })
+            .catch(function(err) {
+                res.status(400).json(err);
+            })
+        })
+        .catch(function(err) {
+            res.status(400).json(err);
+        });
     }
+
 }

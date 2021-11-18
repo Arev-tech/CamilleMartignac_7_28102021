@@ -17,6 +17,7 @@
 
 <script>
 import axios from 'axios';
+import router from '@/router/index';
 import qs from 'qs';
 export default { 
   name: 'OneMessage',
@@ -58,6 +59,30 @@ export default {
       .then(function (response) {
         const message = response.data;
         localStorage.setItem('OneMessage', JSON.stringify(message));
+        
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    },
+    deleteMessage: function() {
+      console.log(localStorage.getItem('messageId'));
+      var data = qs.stringify({
+        'messageId': localStorage.getItem('messageId')      });
+      var config = {
+        method: 'delete',
+        url: 'http://localhost:3000/api/messages/me',
+        headers: { 
+          'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        data: data
+      };
+      console.log(config);
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        router.push('/feed');
       })
       .catch(function (error) {
         console.log(error);

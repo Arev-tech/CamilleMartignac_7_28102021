@@ -17,8 +17,8 @@
 
 <script>
 import axios from 'axios';
-import router from '@/router/index';
 import qs from 'qs';
+//import router from '@/router/index';
 export default { 
   name: 'NewMessage',
   data() {
@@ -29,13 +29,13 @@ export default {
   },
   methods: {
     CreateMessage: function() {
-        const file = document.getElementById("file").value;
+        const file = document.getElementById("file").files[0].name;   
+        console.log(file);
         var data = qs.stringify({
         'title': this.title,
         'content': this.content,
         'attachment': file
-        });
-        
+      });     
         var config = {
         method: 'post',
         url: 'http://localhost:3000/api/messages/new',
@@ -43,20 +43,20 @@ export default {
             'Authorization': 'Bearer ' + localStorage.getItem('token'), 
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data : data
+        data: data
         };
-
         axios(config)
-        .then(function (response) {
-            console.log(JSON.stringify(response.data));
-            console.log('message enregistré');
-            router.push('/feed');
+        .then(function () {
+            alert('Message créé');
         })
         .catch(function (error) {
             console.log(error);
             alert(error);
         });
 
+    },
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0]
     }
   }
 }
