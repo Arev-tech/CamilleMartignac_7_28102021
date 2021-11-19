@@ -73,6 +73,7 @@
   width: fit-content;
   border-radius: 20px;
   padding: 0 0 20px 0;
+  border: solid 1px white;
 }
 
 .row{

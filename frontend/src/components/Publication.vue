@@ -50,9 +50,9 @@ export default {
 a{
   text-decoration: none;
   color: black;
-  margin: 30px 0;
+  margin: 40px auto;
   border-radius: 20px;
   cursor: pointer;
-
+  width: 65%;
 }
 </style>

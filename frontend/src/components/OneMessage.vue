@@ -1,16 +1,18 @@
 <template>
   <div class="card" >
-    <img class="card-img-top">
+    <h4 class="card-title"><strong>{{ message.User.username }}</strong> a publié : <strong>{{ message.title }}</strong></h4>
+    <h6 class="card-subtitle mb-2 text-muted text-left">{{ message.updatedAt }}</h6>
     <div class="card-body">
-      <h2 class="card-title">{{ message.User.username }} a publié : {{ message.title }}</h2>
+      <img  class="card-img" :src="message.attachment" alt="gif">
       <p class="card-text">{{ message.content }}</p>
-      <img :src="message.attachment" alt="gif">
-      <div class="card-footer text-muted" v-for="commentaire in commentaires" :key="commentaire.id">
-        <p>{{ commentaire.User.username }} a commenté : {{ commentaire.Commentaire }} </p>
-      </div>
     </div>
-    <input type="text" class="input IWB" v-model="commentaire" placeholder="Exprimez-vous">
-    <input type="button" @click="newCommentaire" value="Envoyez votre commentaire">
+    <div class="card-footer text-muted" v-for="commentaire in commentaires" :key="commentaire.id">
+      <p>{{ commentaire.User.username }} a commenté : {{ commentaire.Commentaire }} </p>
+    </div>
+    <div class="row">
+      <input type="text" class="input1 IWB" v-model="commentaire" placeholder="Commentez">
+      <input type="button" class="input2 IWB" @click="newCommentaire" value="Envoyez">
+    </div>
     <button @click="deleteMessage" class="btn btn-danger" :class="{'disabled' : !isOwner}">Supprimer ce message</button>
   </div>
 </template>
@@ -139,15 +141,39 @@ export default {
 
 <style scoped>
 .card{
-  width: 50%;
+  width: 60%;
   margin: auto;
+  border-radius: 20px;
+  padding: 20px;
+  color: #2c3e50;
 }
 a{
   text-decoration: none;
 }
+.input1{
+  width: 55%;
+}
+.input2{
+  width: 35%;
+  border-radius: 20px;
+}
+.input2:hover{
+  filter: brightness(50%);
+}
+.disabled{
+  display: none;
+}
 input{
-  margin: auto;
-  padding: 10px;
+  padding: 10px !important;
+  height: 50%;
+  margin: 20px 0 20px 0;
+}
+input:focus{
+  outline: none;
+}
+.row{
+  display: flex;
+  flex-direction: row;
 }
 .IWB{
   border: none;
@@ -155,5 +181,6 @@ input{
 }
 input::placeholder {  
 	text-align: center; 
-}
+  font-size: auto;
+  }
 </style>

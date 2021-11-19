@@ -24,7 +24,7 @@
     },
     data() {
       return {
-        message: 'Vos informations'
+        message: 'Vos informations : '
       }
     }
   }

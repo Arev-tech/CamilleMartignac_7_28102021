@@ -1,11 +1,11 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <img alt="Vue logo" src="../assets/logo.png">
+      <img class="logo" alt="Vue logo" src="../assets/logo.png">
       <div class="nav" id="nav">
-        <router-link to="/profile" class="router"><i class="fas fa-user-circle"></i> Profile</router-link>|
-        <router-link to="/feed" class="router">Accueil</router-link>|
-        <router-link to="/" class="router"> Déconnexion</router-link>
+        <router-link to="/feed" class="router nav-item">Accueil</router-link>
+        <router-link to="/profile" class="router nav-item"><i class="fas fa-user-circle"></i> Profile</router-link>
+        <router-link to="/" class="router nav-item"> Déconnexion</router-link>
       </div>
     </div>
   </div>
@@ -27,19 +27,22 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+.container-fluid{
+  background-color: white;
+  border-radius: 0 0 20px 20px;
+}
 
 .nav-item{
   margin: 0 20px;
 }
 .nav-item:hover{
   text-decoration: none;
-  zoom: 105%;
-  color: #42b983 !important;
+  zoom: 110%;
+  font-weight: 900;
 }
-
 img{
   margin: 0;
-  width: 20%;
+  width: 30%;
   height: 10%;
 }
 

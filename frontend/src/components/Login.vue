@@ -1,9 +1,6 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
-      <p> {{ error }} </p>
-    </div>
-    <div class="row justify-content-center">
       <label class="label" for="email">Saisissez votre adresse email :</label><br>
       <input required autofocus class="input" type="email" v-model="email" id="email" placeholder="Email">
     </div>
@@ -12,7 +9,7 @@
       <input required class="input" type="password" v-model="password" placeholder="Mot de passe" id="mdp">
     </div>
     <div class="row justify-content-center">
-      <button @click="loginAccount" class="btn">Se connecter</button>
+      <button @click="loginAccount" class="btn" :class="{'disabled' : !validate}">Se connecter</button>
     </div>
   </div>
 </template>
@@ -64,6 +61,7 @@
   width: fit-content;
   border-radius: 20px;
   padding: 20px 0;
+  border: solid 1px white;
 }
 .btn {
   background-color: white;

@@ -1,5 +1,6 @@
 <template>
   <div class="div">
+    <Head />
     <Message :message="message" />
     <Login />
     <Footer />
@@ -11,10 +12,12 @@
   import Footer from '@/components/Footer.vue'
   import Login from '@/components/Login.vue'
   import Message from '@/components/Message.vue'
+  import Head from '@/components/Head.vue'
 
   export default {
     name: 'Home',
     components: {
+      Head,
       Footer,
       Message,
       Login
@@ -26,9 +29,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .div{
-    margin: 60px auto;
-  }
-</style>

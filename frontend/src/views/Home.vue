@@ -1,20 +1,17 @@
 <template>
   <div>
-    <Bandeau msg="Bienvenue sur Groupomania" msg2="Nous sommes ravis de vous retouver"/>
-    <Footer />
+    <Bandeau msg="Bienvenue sur Groupomania" msg2="Avec Groupomania, le réseau social d'entreprise, restez en contact !!"/>
   </div>
   
 </template>
 
 <script>
 // @ is an alias to /src
-  import Footer from '@/components/Footer.vue'
   import Bandeau from '@/components/Bandeau.vue'
 
   export default {
     name: 'Home',
     components: {
-      Footer,
       Bandeau,
     },
     mounted : function() {
@@ -24,7 +21,10 @@
 </script>
 
 <style scoped>
+img{
+  width: 40%;
+}
 div{
-  margin: 60px auto;
+  background-color: #2c3e50;
 }
 </style>

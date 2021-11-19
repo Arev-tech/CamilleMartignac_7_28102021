@@ -33,6 +33,10 @@ export default {
       }
       })
       .then(data => {
+        console.log(data.data.bio);
+        if(data.data.bio == '') {
+          data.data.bio = "Vous n'avez pas de bio pour le moment";
+        }
         this.user = data.data;
       })
       .catch(function(err) {
@@ -73,5 +77,8 @@ export default {
     flex-direction: column;
     align-items: center;
     color: white;
+}
+.container{
+  border: solid white 1px;
 }
 </style>>

@@ -1,12 +1,11 @@
 <template>
-  <div>
+  <div class="page">
     <Header/>
     <Message :message="message" />
     <BandeauMessage />
     <Publication/>
     <Footer />
   </div>
-  
 </template>
 
 <script>
