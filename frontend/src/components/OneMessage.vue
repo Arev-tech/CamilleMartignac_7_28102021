@@ -69,18 +69,16 @@ export default {
     },
     deleteMessage: function() {
       console.log(localStorage.getItem('messageId'));
-      var data = qs.stringify({
-        'messageId': localStorage.getItem('messageId')      });
       var config = {
         method: 'delete',
         url: 'http://localhost:3000/api/messages/me',
         headers: { 
           'Authorization': 'Bearer ' + localStorage.getItem('token'), 
           'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        data: data
+          'messageid': localStorage.getItem('messageId')      
+
+        }
       };
-      console.log(config);
       axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));

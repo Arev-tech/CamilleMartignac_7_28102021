@@ -1,40 +1,53 @@
-// Imports
-const express = require('express');
-const bodyParser = require('body-parser');
-const apiRouter = require('./apiRouter').router;
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const path = require('path');
-const cors = require('cors');
+const http = require("http");
+const app = require("./app");
+const db = require("./models/index");
+require("dotenv").config();
 
-// Instanciate server
-const server = express();
+const normalizePort = (val) => {
+  // la fonction normalizeport renvoie un port valide, qu'il soit fourni sous la forme d'un number ou d'un string
+  const port = parseInt(val, 10);
+  if (isNaN(port)) {
+    return val;
+  }
+  if (port >= 0) {
+    return port;
+  }
+  return false;
+};
+const port = normalizePort(process.env.NODE_DOCKER_PORT || "3000");
+app.set("port", port);
 
-// Configuration de limite pour les connexions
-const  limiteur  =  rateLimit ({ 
-    windowMs : 5  *  60  *  1000 ,  // 5 minutes 
-    max : 10  // limite chaque IP à 10 requêtes par windowMs 
+const errorHandler = (error) => {
+  // la fonction errorHandler  recherche les différentes erreurs et les gère de manière appropriée. Elle est ensuite enregistrée dans le serveur ;
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+  const address = server.address();
+  const bind =
+    typeof address === "string" ? "pipe " + address : "port: " + port;
+  switch (error.code) {
+    case "EACCES":
+      console.error(bind + " requires elevated privileges.");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " is already in use.");
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+};
+
+const server = http.createServer(app);
+
+db.sequelize.sync().then(function () {
+  server.on("error", errorHandler);
+  server.on("listening", () => {
+    const address = server.address();
+    const bind =
+      typeof address === "string" ? "pipe " + address : "port " + port;
+    console.log("Listening on " + bind);
   });
-
-//Body parser configuration
-server.use(bodyParser.urlencoded({ extended: true }));
-server.use(bodyParser.json());
-server.use(cors());
-
-// Configure routes
-server.get('/', function (req, res) {
-    res.setHeader('Content-Type','text/html');
-    res.status(200).send('<h1>Bonjour sur mon serveur</h1>');
-});
-
-// Utilisation du package helmet pour toutes les routes
-server.use(helmet());
-server.use('/api/', apiRouter);
-
-// Sécurisation contre les essais multiples de connexions
-server.use('/api/auth', limiteur);
-server.use('/files', express.static(path.join(__dirname, '/files')));
-// Launch server
-server.listen(3000, function() {
-    console.log('Server listen on port 3000');
+  server.listen(port);
 });

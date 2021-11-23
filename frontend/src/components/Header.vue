@@ -4,7 +4,7 @@
       <img class="logo" alt="Vue logo" src="../assets/logo.png">
       <div class="nav" id="nav">
         <router-link to="/feed" class="router nav-item">Accueil</router-link>
-        <router-link to="/profile" class="router nav-item"><i class="fas fa-user-circle"></i> Profile</router-link>
+        <router-link to="/profile" class="router nav-item"><i class="fas fa-user-circle"></i> Profil</router-link>
         <router-link to="/" class="router nav-item"> Déconnexion</router-link>
       </div>
     </div>

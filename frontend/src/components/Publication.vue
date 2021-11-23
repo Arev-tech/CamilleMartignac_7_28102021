@@ -7,6 +7,7 @@
       <img :src="message.attachment" alt="gif">
       <div class="card-footer text-muted">Voir les commentaires</div>
     </a>
+    <div class="row">{{ error }}</div>
   </div>
 </template>
 
@@ -22,6 +23,7 @@ export default {
         username: '',
         attachment: '',
         id: '',
+        error: '',
       }
   },
   mounted: function() {
@@ -31,6 +33,9 @@ export default {
       }
     })
     .then(data => {
+      if(data.data.messages.length == 0) {
+        this.error = "il n'y a encore aucun message sur le mur, postez quelque chose maintenant !"
+      }
       this.messages = data.data.messages;
     })
     .catch(function(err) {

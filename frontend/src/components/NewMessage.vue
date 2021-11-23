@@ -7,7 +7,7 @@
       <textarea required class="input" type="text" v-model="content" placeholder="Exprimez-vous" id="content"></textarea>
     </div>
     <div class="row justify-content-center">
-      <input required autofocus class="file" enctype="multipart/form-data"  type="file" name="attachment" id="file" placeholder="File">
+      <input required @change="uploadImage" accept="image/*" class="file" type="file" name="image" id="image">
     </div>
     <div class="row justify-content-center">
       <button @click="CreateMessage" class="btn">Publier</button>
@@ -28,20 +28,31 @@ export default {
     }
   },
   methods: {
+    uploadImage (e) {
+      let img = e.target.files[0]
+      let fd= new FormData()
+      fd.append('image', img)
+      console.log(fd);
+      axios.post('http://localhost:3000/upload-image', fd)
+        .then(resp => {
+          this.imagePath = resp.data.path
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     CreateMessage: function() {
-        const file = document.getElementById("file").files[0].name;   
-        console.log(file);
         var data = qs.stringify({
         'title': this.title,
         'content': this.content,
-        'attachment': file
-      });     
+        'attachment': this.imagePath,
+      });
+      
         var config = {
         method: 'post',
         url: 'http://localhost:3000/api/messages/new',
         headers: { 
-            'Authorization': 'Bearer ' + localStorage.getItem('token'), 
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
         },
         data: data
         };
@@ -54,7 +65,6 @@ export default {
             console.log(error);
             alert(error);
         });
-
     },
     onFileSelected(event) {
       this.selectedFile = event.target.files[0]
@@ -93,5 +103,4 @@ label {
     border-radius: 10px;
     color: #2c3e50;
 }
-
 </style>

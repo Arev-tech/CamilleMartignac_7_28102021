@@ -1,6 +1,8 @@
 <template>
-  <div class="container" window.onload="getAllMessages">
-    <router-link to="/createMessage"><strong>Quelque chose à poster ?</strong></router-link>
+  <div class="container">
+    <div class="row justify-content-center">
+      <router-link to="/createMessage"><strong>Quelque chose à poster ?</strong></router-link>
+    </div>
   </div>
 </template>
 
@@ -22,6 +24,6 @@ a{
 a:hover{
   background-color: #2c3e50;
   color: white;
-  zoom: 110%;
+  transition: 0.4s;
 }
 </style>
