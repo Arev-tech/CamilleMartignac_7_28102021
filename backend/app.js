@@ -21,16 +21,14 @@ dbTest();
 // Fin test DB
 
 const app = express();
-
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 const multer = require('./middleware/multer-config');
+const path = require('path');
 
+app.use('/images', express.static(path.join(__dirname, 'images')))
 //Images
 app.post('/upload-image', multer, (req, res) => {
   try {
@@ -39,8 +37,7 @@ app.post('/upload-image', multer, (req, res) => {
   } catch(err) {
     res.send(err);
   }
-})
-
+});
 app.use('/api/users', usersRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/messages/me', commentairesRoutes);
