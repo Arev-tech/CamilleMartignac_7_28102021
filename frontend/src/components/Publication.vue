@@ -46,7 +46,50 @@ export default {
   methods: {
     show: function(btn) {
       localStorage.setItem('messageId', btn.id);
+      this.getOneMessage();
+      this.getAllCommentaires();    
+    },
+    getOneMessage : function() {
+      var config = {
+        method: 'get',
+        url: 'http://localhost:3000/api/messages/me',
+        headers: { 
+          Authorization: 'Bearer ' + localStorage.getItem('token'),
+          id : localStorage.getItem('messageId')
+        }
+      }
+      axios(config)
+      .then(function (response) {
+        const message = response.data;
+        localStorage.setItem('OneMessage', JSON.stringify(message));
+        
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    },
+    getAllCommentaires: function() {
+      var config = {
+        method: 'get',
+        url: 'http://localhost:3000/api/messages/me/commentaires',
+        headers: { 
+          'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'id': localStorage.getItem('messageId') 
+        },
+      };
+      axios(config)
+      .then(data => {
+        console.log('commentaires récupérés');
+        const commentaires = data.data;
+        localStorage.setItem('Commentaires', JSON.stringify(commentaires));
+      })
+      .catch(function (error) {
+        console.log(error);
+        alert(error);
+      });
     }
+
   }
 }
 </script>

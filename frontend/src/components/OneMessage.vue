@@ -26,7 +26,7 @@ export default {
   data: function() {
     return {
       message : JSON.parse(localStorage.getItem('OneMessage')),
-      commentaires: [],
+      commentaires: JSON.parse(localStorage.getItem('Commentaires'))
     }
   },
   computed: {
@@ -44,29 +44,9 @@ export default {
     }
   },
   mounted: function() {
-    this.getOneMessage();
-    this.getAllCommentaires();
+    this.getAllCommentaires()
   },
   methods: {
-    getOneMessage : function() {
-      var config = {
-        method: 'get',
-        url: 'http://localhost:3000/api/messages/me',
-        headers: { 
-          Authorization: 'Bearer ' + localStorage.getItem('token'),
-          id : localStorage.getItem('messageId')
-        }
-      }
-      axios(config)
-      .then(function (response) {
-        const message = response.data;
-        localStorage.setItem('OneMessage', JSON.stringify(message));
-        
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    },
     deleteMessage: function() {
       console.log(localStorage.getItem('messageId'));
       var config = {
