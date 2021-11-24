@@ -1,13 +1,15 @@
 <template>
   <div class="card" >
-    <h4 class="card-title"><strong>{{ message.User.username }}</strong> a publié : <strong>{{ message.title }}</strong></h4>
+    <h4 class="card-title text-left"><strong>{{ message.User.username }}</strong> </h4>
+    <h4 class="text-left">{{ message.title }}</h4>
     <h6 class="card-subtitle mb-2 text-muted text-left">{{ message.updatedAt }}</h6>
     <div class="card-body">
       <img  class="card-img" :src="message.attachment" alt="gif">
       <p class="card-text">{{ message.content }}</p>
     </div>
-    <div class="card-footer text-muted" v-for="commentaire in commentaires" :key="commentaire.id">
-      <p>{{ commentaire.User.username }} a commenté : {{ commentaire.Commentaire }} </p>
+    <div class="card-footer" v-for="commentaire in commentaires" :key="commentaire.id">
+      <p class="text-muted text-left">{{ commentaire.User.username }} le {{ commentaire.createdAt.split('T')[0].split('-').reverse()[0] }}/{{ commentaire.createdAt.split('T')[0].split('-').reverse()[1] }}/{{ commentaire.createdAt.split('T')[0].split('-').reverse()[2] }}</p>
+      <p class="text-left">{{ commentaire.Commentaire }} </p>
     </div>
     <div class="row">
       <input type="text" class="input1 IWB" v-model="commentaire" placeholder="Commentez">

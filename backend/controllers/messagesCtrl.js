@@ -46,7 +46,7 @@ module.exports = {
         // Params
         const messageId = req.headers.id;
         models.Message.findOne({
-            attributes: ['title', 'content', 'attachment'],
+            attributes: ['title', 'content', 'attachment', 'createdAt'],
             where: { id: messageId },
             include: [{
                 model: models.User,

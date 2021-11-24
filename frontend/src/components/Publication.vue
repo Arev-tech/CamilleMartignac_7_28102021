@@ -3,7 +3,8 @@
     <a href="/message" :id="message.id" v-on:click="show(message)" class="card" v-for="message in messages" :key='message.id'>
       <div class="card-body">
         <h2 class="card-title text-left">{{ message.title }}</h2>
-        <h6 class="card-subtitle mb-2 text-muted text-left">{{ message.User.username }}</h6>
+        <h6 class="card-subtitle mb-2 text-muted text-left">{{ message.User.username }} </h6>
+        <h6 class="card-subtitle mb-2 text-muted text-left">Publié le {{ message.createdAt.split('T')[0].split('-').reverse()[0] }}/{{ message.createdAt.split('T')[0].split('-').reverse()[1] }}/{{ message.createdAt.split('T')[0].split('-').reverse()[2] }}</h6>
       </div>
       <img :src="message.attachment" :alt="message.content">
       <p class="card-text">{{ message.content }}</p>
@@ -29,6 +30,7 @@ export default {
       }
   },
   mounted: function() {
+
     axios.get('http://localhost:3000/api/messages', {
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -103,10 +105,12 @@ a{
   margin: 40px auto;
   border-radius: 20px;
   cursor: pointer;
-  width: 55%;
+  width: 65%;
+
 }
 img{
-  width: 80% content-box;
+  max-width: content-box;
+  max-height: content-box;
 }
 
 </style>
