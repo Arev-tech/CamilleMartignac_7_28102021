@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 const usersRoutes    = require('./routes/usersRoutes');
 const messagesRoutes = require('./routes/messagesRoutes');
 const commentairesRoutes = require('./routes/commentairesRoutes');
+const dotenv = require("dotenv");
+dotenv.config();
+
 
 // Test DB
 const { sequelize } = require('./models/index');
@@ -24,20 +27,10 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
-const multer = require('./middleware/multer-config');
 const path = require('path');
 
 app.use('/images', express.static(path.join(__dirname, 'images')))
 //Images
-app.post('/upload-image', multer, (req, res) => {
-  try {
-    console.log(req.file);
-    res.send(req.file);
-  } catch(err) {
-    res.send(err);
-  }
-});
 app.use('/api/users', usersRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/messages/me', commentairesRoutes);

@@ -128,8 +128,8 @@ module.exports = {
         // Params
         const title = req.body.title;
         const content = req.body.content;
-        let imageUrl = `${req.protocol}://${req.get("host")}/${ req.body.attachment}`;
-        if (title == null || content == null) {
+        let imageUrl = `${req.protocol}://${req.get("host")}/images/${ req.file.filename}`;
+        if (title == null || content == null || req.file == null) {
             return res.status(400).json({
                 'error': 'missing parameters'
             });
@@ -137,6 +137,7 @@ module.exports = {
         asyncLib.waterfall([
             function(done) {
                 models.User.findOne({
+                    attributes: ['id', 'username'],
                     where: {
                         id: userId
                     }

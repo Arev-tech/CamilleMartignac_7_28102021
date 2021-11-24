@@ -14,9 +14,9 @@ module.exports = {
 
         // Params
         const email = req.body.email;
-        var username = req.body.username;
+        const username = req.body.username;
         const password = req.body.password;
-        var bio = req.body.bio;
+        const bio = req.body.bio;
 
         if (email == null || username == null || password == null) {
             return res.status(400).json({
@@ -71,7 +71,7 @@ module.exports = {
                 }
             },
             function(userFound, bcryptedPassword, done) {
-                var newUser = models.User.create({
+                const newUser = models.User.create({
                         email: email,
                         username: username,
                         password: bcryptedPassword,

@@ -1,7 +1,6 @@
 const http = require("http");
 const app = require("./app");
 const db = require("./models/index");
-require("dotenv").config();
 
 const normalizePort = (val) => {
   // la fonction normalizeport renvoie un port valide, qu'il soit fourni sous la forme d'un number ou d'un string

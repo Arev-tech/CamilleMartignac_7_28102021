@@ -1,23 +1,25 @@
 <template>
-  <div class=container>
+  <div class="container">
     <div class="row justify-content-center">
-      <input required autofocus class="input" type="text" v-model="title" id="title" placeholder="Title">
+      <label for="title">Titre:</label>
+      <input required autofocus class="input" type="text" v-model="title" id="title" placeholder="Titre">
     </div>
     <div class="row justify-content-center">
+      <label for="content">Publication: </label>
       <textarea required class="input" type="text" v-model="content" placeholder="Exprimez-vous" id="content"></textarea>
     </div>
     <div class="row justify-content-center">
-      <input required @change="uploadImage" accept="image/*" class="file" type="file" name="image" id="image">
+      <label for="image">Choisissez votre image: </label>
+      <input required @change="checkSize()" accept="image/*" class="file" type="file" name="image" id="image">
     </div>
     <div class="row justify-content-center">
-      <button @click="CreateMessage" class="btn">Publier</button>
+      <button @click="CreateMessage" class="btn" :class="{'disabled' : !validate}">Publier</button>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import qs from 'qs';
 import router from '@/router/index';
 export default { 
   name: 'NewMessage',
@@ -27,35 +29,38 @@ export default {
         title: '',
     }
   },
+  computed: {
+    validate : function() {
+        if(this.title != '' && this.content != '') {
+          return true;
+        } else {
+          return false;
+        }
+    },
+  },
   methods: {
-    uploadImage (e) {
-      let img = e.target.files[0]
-      let fd= new FormData()
-      fd.append('image', img)
-      console.log(fd);
-      axios.post('http://localhost:3000/upload-image', fd)
-        .then(resp => {
-          this.imagePath = resp.data.path
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    checkSize: function() {
+      const size = document.getElementById("image").files[0].size;
+      if(size > 3000000){
+        alert('fichier trop volumineux, taille max: 3 Mo');
+        document.getElementById("image").value= null;
+      }
     },
     CreateMessage: function() {
-        var data = qs.stringify({
-        'title': this.title,
-        'content': this.content,
-        'attachment': this.imagePath,
-      });
-      
+        const img = document.getElementById("image").files[0];
+        let fd = new FormData()
+        fd.append('image', img, img.name);
+        fd.append('title', this.title);
+        fd.append('content', this.content);
         var config = {
         method: 'post',
         url: 'http://localhost:3000/api/messages/new',
         headers: { 
             'Authorization': 'Bearer ' + localStorage.getItem('token')
         },
-        data: data
+        data: fd,
         };
+        console.log(config);
         axios(config)
         .then(function () {
             alert('Message créé');
@@ -78,6 +83,7 @@ export default {
   width: fit-content;
   border-radius: 20px;
   padding: 20px 0;
+  border: solid 1px white;
 }
 .btn {
   background-color: white;
@@ -87,9 +93,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-.file{
-  background-color: white;
 }
 label {
   color: white;

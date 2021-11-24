@@ -25,7 +25,7 @@
     },
     data() {
         return {
-            message : 'Exprimez-vous'
+            message : 'Exprimez-vous :'
         }
     }
   }

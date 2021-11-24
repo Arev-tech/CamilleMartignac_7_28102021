@@ -1,0 +1,9 @@
+{
+    "development": {
+      "username": "username",
+      "password": "password",
+      "database": "database nom",
+      "host": "host",
+      "dialect": "dialect"
+    }
+}

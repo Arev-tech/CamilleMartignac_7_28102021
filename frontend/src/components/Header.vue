@@ -33,12 +33,12 @@ export default {
 }
 
 .nav-item{
-  margin: 0 20px;
+  margin: 0 10px;
+  padding: 10px;
 }
 .nav-item:hover{
   text-decoration: none;
-  zoom: 110%;
-  font-weight: 900;
+  border-bottom: solid 3px #2c3e50;
 }
 img{
   margin: 0;

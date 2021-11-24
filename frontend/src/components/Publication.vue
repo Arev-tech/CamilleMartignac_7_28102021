@@ -1,11 +1,13 @@
 <template>
   <div class="container" window.onload="getAllMessages">
     <a href="/message" :id="message.id" v-on:click="show(message)" class="card" v-for="message in messages" :key='message.id'>
-      <h2 class="card-title">{{ message.title }}</h2>
-      <h6 class="card-subtitle mb-2 text-muted">{{ message.User.username }}</h6>
+      <div class="card-body">
+        <h2 class="card-title text-left">{{ message.title }}</h2>
+        <h6 class="card-subtitle mb-2 text-muted text-left">{{ message.User.username }}</h6>
+      </div>
+      <img :src="message.attachment" :alt="message.content">
       <p class="card-text">{{ message.content }}</p>
-      <img :src="message.attachment" alt="gif">
-      <div class="card-footer text-muted">Voir les commentaires</div>
+      <div class="card-footer text-muted text-right">Voir les commentaires</div>
     </a>
     <div class="row">{{ error }}</div>
   </div>
@@ -101,6 +103,10 @@ a{
   margin: 40px auto;
   border-radius: 20px;
   cursor: pointer;
-  width: 65%;
+  width: 55%;
 }
+img{
+  width: 80% content-box;
+}
+
 </style>

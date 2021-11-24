@@ -39,6 +39,7 @@ export default {
 img{
   border-radius: 20px;
   border: solid white 2px;
+  width:100%;
 }
 .bandeau{
   display: flex;
