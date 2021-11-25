@@ -49,7 +49,7 @@
         })
         .catch(function(err) {
           console.log(err);
-          alert(err);
+          alert("impossible de vous connecter");
         });
       }
     }

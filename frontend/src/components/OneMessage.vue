@@ -8,7 +8,7 @@
       <p class="card-text">{{ message.content }}</p>
     </div>
     <div class="card-footer" v-for="commentaire in commentaires" :key="commentaire.id">
-      <p class="text-muted text-left">{{ commentaire.User.username }} le {{ commentaire.createdAt.split('T')[0].split('-').reverse()[0] }}/{{ commentaire.createdAt.split('T')[0].split('-').reverse()[1] }}/{{ commentaire.createdAt.split('T')[0].split('-').reverse()[2] }}</p>
+      <p class="titreCommentaire text-muted text-left"><strong>{{ commentaire.User.username }} le {{ commentaire.createdAt.split('T')[0].split('-').reverse()[0] }}/{{ commentaire.createdAt.split('T')[0].split('-').reverse()[1] }}/{{ commentaire.createdAt.split('T')[0].split('-').reverse()[2] }}</strong></p>
       <p class="text-left">{{ commentaire.Commentaire }} </p>
     </div>
     <div class="row">
@@ -33,16 +33,15 @@ export default {
   },
   computed: {
     isOwner: function() {
-        const userId = localStorage.getItem('userId');
-        const message = JSON.parse(localStorage.getItem('OneMessage'));
-        console.log(message.User.id);
-        const messageUserId = message.User.id;
-        if(userId == messageUserId) {
-          return true;
-        }
-        else {
-          return false;
-        }
+      const userId = localStorage.getItem('userId');
+      const message = JSON.parse(localStorage.getItem('OneMessage'));
+      console.log(message.User.id);
+      const messageUserId = message.User.id;
+      if(userId == messageUserId) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   mounted: function() {
@@ -68,6 +67,7 @@ export default {
       })
       .catch(function (error) {
         console.log(error);
+        alert("impossible de supprimer le message");
       });
     },
     newCommentaire : function() {
@@ -92,7 +92,7 @@ export default {
       })
       .catch(function (error) {
         console.log(error);
-        alert(error);
+        alert("impossible d'enregistrer un nouveau commentaire");
       });
     },
     getAllCommentaires: function() {
@@ -112,7 +112,8 @@ export default {
       })
       .catch(function (error) {
         console.log(error);
-        alert(error);
+        
+        alert('impossoble de charger les commentaires');
       });
     }
   }
@@ -122,10 +123,13 @@ export default {
 <style scoped>
 .card{
   width: 60%;
-  margin: auto;
+  margin:20px auto;
   border-radius: 20px;
   padding: 20px;
   color: #2c3e50;
+}
+.card-footer{
+  border: solid 2px ;
 }
 a{
   text-decoration: none;

@@ -33,7 +33,6 @@ export default {
       }
       })
       .then(data => {
-        console.log(data.data.bio);
         if(data.data.bio == '') {
           data.data.bio = "Vous n'avez pas de bio pour le moment";
         }
@@ -41,6 +40,7 @@ export default {
       })
       .catch(function(err) {
         console.log(err);
+        alert("impossible de récupérer vos informations");
       });
     },
     methods: {
@@ -56,7 +56,7 @@ export default {
         })
         .catch(function(err) {
           console.log(err);
-          alert(err);
+          alert('impossible de supprimer le compte');
         });
       }
     }
@@ -65,11 +65,13 @@ export default {
 
 
 <style scoped>
-    .container{
+.container{
   background-color: #2c3e50;
   width: fit-content;
   border-radius: 20px;
   padding: 20px 0;
+  border: solid white 1px;
+  margin: 20px auto;
 }
 .row{
     margin: 20px;
@@ -77,8 +79,5 @@ export default {
     flex-direction: column;
     align-items: center;
     color: white;
-}
-.container{
-  border: solid white 1px;
 }
 </style>>

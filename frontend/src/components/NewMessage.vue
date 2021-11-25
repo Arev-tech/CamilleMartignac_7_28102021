@@ -68,7 +68,7 @@ export default {
         })
         .catch(function (error) {
             console.log(error);
-            alert(error);
+            alert("impossible de créer le message");
         });
     },
     onFileSelected(event) {

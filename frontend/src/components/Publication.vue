@@ -44,7 +44,8 @@ export default {
     })
     .catch(function(err) {
       console.log(err);
-      alert(err);
+      let container = document.querySelector(".container");
+      container.innerHTML = "Nous n'avons pas réussi à afficher le fil des messages. Vérifier que le serveur fonctionne correctement et rechargez la page"
     });
   },
   methods: {
@@ -70,6 +71,7 @@ export default {
       })
       .catch(function (error) {
         console.log(error);
+        alert("impossible d'afficher ce message");
       });
     },
     getAllCommentaires: function() {
@@ -90,7 +92,7 @@ export default {
       })
       .catch(function (error) {
         console.log(error);
-        alert(error);
+        alert("impossible de récupérer les commentaires");
       });
     }
 

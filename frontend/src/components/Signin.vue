@@ -60,7 +60,7 @@
         })
         .catch(function(err) {
           console.log(err);
-          alert(err);
+          alert('impossible de créer un nouvel utilisateur');
         });
       }
       }
