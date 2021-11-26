@@ -1,5 +1,6 @@
 <template>
   <div class="card" >
+    <p class="text-danger">{{ error }}</p>
     <h4 class="card-title text-left"><strong>{{ message.User.username }}</strong> </h4>
     <h4 class="text-left">{{ message.title }}</h4>
     <h6 class="card-subtitle mb-2 text-muted text-left">{{ message.updatedAt }}</h6>
@@ -7,6 +8,7 @@
       <img  class="card-img" :src="message.attachment" alt="gif">
       <p class="card-text">{{ message.content }}</p>
     </div>
+    <p><strong>{{ noComment }}</strong></p>
     <div class="card-footer" v-for="commentaire in commentaires" :key="commentaire.id">
       <p class="titreCommentaire text-muted text-left"><strong>{{ commentaire.User.username }} le {{ commentaire.createdAt.split('T')[0].split('-').reverse()[0] }}/{{ commentaire.createdAt.split('T')[0].split('-').reverse()[1] }}/{{ commentaire.createdAt.split('T')[0].split('-').reverse()[2] }}</strong></p>
       <p class="text-left">{{ commentaire.Commentaire }} </p>
@@ -22,13 +24,14 @@
 <script>
 import axios from 'axios';
 import router from '@/router/index';
-import qs from 'qs';
 export default { 
   name: 'OneMessage',
   data: function() {
     return {
       message : JSON.parse(localStorage.getItem('OneMessage')),
-      commentaires: JSON.parse(localStorage.getItem('Commentaires'))
+      commentaires: JSON.parse(localStorage.getItem('Commentaires')),
+      error: '',
+      noComment: '',
     }
   },
   computed: {
@@ -45,7 +48,7 @@ export default {
     }
   },
   mounted: function() {
-    this.getAllCommentaires()
+    this.getAllCommentaires();
   },
   methods: {
     deleteMessage: function() {
@@ -57,7 +60,6 @@ export default {
           'Authorization': 'Bearer ' + localStorage.getItem('token'), 
           'Content-Type': 'application/x-www-form-urlencoded',
           'messageid': localStorage.getItem('messageId')      
-
         }
       };
       axios(config)
@@ -67,24 +69,20 @@ export default {
       })
       .catch(function (error) {
         console.log(error);
-        alert("impossible de supprimer le message");
       });
     },
     newCommentaire : function() {
-      var data = qs.stringify({
-        'messageId': localStorage.getItem('messageId'),
-        'commentaire': this.commentaire,
-      });
       var config = {
         method: 'post',
         url: 'http://localhost:3000/api/messages/me/commentaires',
         headers: { 
           'Authorization': 'Bearer ' + localStorage.getItem('token'), 
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        data : data
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'messageId': localStorage.getItem('messageId'),
+          'commentaire': this.commentaire,
+        }
       };
-      console.log(config);
+      console.log(config.headers);
       axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
@@ -107,13 +105,16 @@ export default {
       };
       axios(config)
       .then(data => {
-        this.commentaires = data.data;
-        console.log(data.data);
+        if(data.data.length == 0) {
+          this.noComment = "il n'y a pas encore de commentaires";
+        } else {
+          this.commentaires = data.data;
+        }
+        this.noComment = '';
       })
       .catch(function (error) {
         console.log(error);
-        
-        alert('impossoble de charger les commentaires');
+
       });
     }
   }

@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <p class="error text-danger"><strong>{{ error }}</strong></p>
     <div class="row justify-content-center">
       <label for="title">Titre:</label>
       <input required autofocus class="input" type="text" v-model="title" id="title" placeholder="Titre">
@@ -27,6 +28,7 @@ export default {
     return {
         content: '',
         title: '',
+        error: '',
     }
   },
   computed: {
@@ -48,28 +50,33 @@ export default {
     },
     CreateMessage: function() {
         const img = document.getElementById("image").files[0];
-        let fd = new FormData()
-        fd.append('image', img, img.name);
-        fd.append('title', this.title);
-        fd.append('content', this.content);
-        var config = {
-        method: 'post',
-        url: 'http://localhost:3000/api/messages/new',
-        headers: { 
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-        },
-        data: fd,
-        };
-        console.log(config);
-        axios(config)
-        .then(function () {
-            alert('Message créé');
-            router.push('/feed');
-        })
-        .catch(function (error) {
-            console.log(error);
-            alert("impossible de créer le message");
-        });
+        console.log(img);
+        if(img != undefined ){
+          let fd = new FormData()
+          fd.append('image', img, img.name);
+          fd.append('title', this.title);
+          fd.append('content', this.content);
+          var config = {
+          method: 'post',
+          url: 'http://localhost:3000/api/messages/new',
+          headers: { 
+              'Authorization': 'Bearer ' + localStorage.getItem('token')
+          },
+          data: fd,
+          };
+          console.log(config);
+          axios(config)
+          .then(function () {
+              alert('Message créé');
+              router.push('/feed');
+          })
+          .catch(function (error) {
+              console.log(error);
+              alert("impossible de créer le message");
+          });
+        } else {
+          this.error = "Vous n'avez pas renseigné d'image";
+        }
     },
     onFileSelected(event) {
       this.selectedFile = event.target.files[0]
@@ -84,9 +91,13 @@ export default {
   border-radius: 20px;
   padding: 20px 0;
   border: solid 1px white;
+  margin: 20px auto;
 }
 .btn {
   background-color: white;
+}
+.disabled{
+  display: none;
 }
 .row{
     margin: 20px;

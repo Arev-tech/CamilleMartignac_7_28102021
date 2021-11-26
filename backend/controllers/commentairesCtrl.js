@@ -16,9 +16,9 @@ module.exports = {
         const userId = jwtUtils.getUserId(headerAuth);
 
         // Params
-        const messageId = req.body.messageId;
-        const commentaire = req.body.commentaire;
-        const username = req.body.username;
+        const messageId = req.headers.messageid;
+        const commentaire = req.headers.commentaire;
+        console.log(req.headers);
 
         if(userId == null || messageId == null || commentaire == null) {
             return res.status(400).json({ 'error': 'missing parameters' });
@@ -29,6 +29,7 @@ module.exports = {
         asyncLib.waterfall([
             function(done) {
                 models.User.findOne({
+                    attributes: ['id','username'],
                     where: {
                         id: userId
                     }
@@ -60,7 +61,7 @@ module.exports = {
                     models.Commentaire.create({
                         MessageId: messageId,
                         UserId: userId,
-                        Username: username,
+                        Username: userFound.username,
                         Commentaire: commentaire
                     })
                     .then(function(newCommentaire) {

@@ -40,8 +40,8 @@ export default {
       })
       .catch(function(err) {
         console.log(err);
-        alert("impossible de récupérer vos informations");
-      });
+        let container = document.querySelector(".container");
+        container.innerHTML = "Nous n'avons pas réussi à afficher le fil des messages. Vérifier que vous êtes connectés et que le serveur fonctionne correctement et rechargez la page"      });
     },
     methods: {
       deleteAccount: function() {

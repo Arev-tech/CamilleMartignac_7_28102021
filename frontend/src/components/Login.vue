@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <p class="text-danger">{{ error }}</p>
     <div class="row justify-content-center">
       <label class="label" for="email">Saisissez votre adresse email :</label><br>
       <input required autofocus class="input" type="email" v-model="email" id="email" placeholder="Email">
@@ -24,7 +25,7 @@
       return {
         email: '',
         password: '',
-        error: this.error,
+        error: '',
       }
     },
     computed: {
@@ -38,6 +39,11 @@
     },
     methods: {
       loginAccount: function() {
+        //eslint-disable-next-line
+        const validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        //eslint-disable-next-line
+        const validPassword = /^(?=.*\d).{4,12}$/;
+        if(this.email.match(validEmail) && this.password.match(validPassword)) {
         axios.post('http://localhost:3000/api/users/login', {
           email: this.email,
           password: this.password,
@@ -51,8 +57,11 @@
           console.log(err);
           alert("impossible de vous connecter");
         });
+        } else {
+          this.error = "email ou mot de passe invalide";
+        }
       }
-    }
+    },
   }
 </script>
 <style scoped>
@@ -62,6 +71,7 @@
   border-radius: 20px;
   padding: 20px 0;
   border: solid 1px white;
+  margin: 20px auto;
 }
 .btn {
   background-color: white;

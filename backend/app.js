@@ -1,17 +1,25 @@
 // Imports
 const express = require('express');
-const cors = require('cors');
 const bodyParser = require('body-parser');
 const usersRoutes    = require('./routes/usersRoutes');
-
-const dotenv = require("dotenv");
-const app = express();
 const path = require('path');
-// Sécurité
+
+// Sécurité API
+const cors = require('cors');
+const dotenv = require("dotenv");
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const morgan = require('morgan');
 
+const app = express();
+// app.use sécurité
 dotenv.config();
+app.use(cors());
+app.use(bodyParser.json());
+app.use(helmet());
+app.use(morgan('combined'));
+
+
 
 const messagesRoutes = require('./routes/messagesRoutes');
 const commentairesRoutes = require('./routes/commentairesRoutes');
@@ -30,8 +38,7 @@ const dbTest = async function () {
 dbTest();
 // Fin test DB
 
-app.use(cors());
-app.use(bodyParser.json());
+
 
 //déclaration de la limite d'essai d'authentification
 const limiteur  =  rateLimit ( { 
@@ -41,9 +48,6 @@ const limiteur  =  rateLimit ( {
 
 // s'applique à toutes les demandes authentification
 app.use("/api/users", limiteur) ;
-//utilisation du middleware helmet
-app.use(helmet());
-
 app.use('/images', express.static(path.join(__dirname, 'images')))
 //Images
 app.use('/api/users', usersRoutes);

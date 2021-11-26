@@ -1,5 +1,6 @@
 <template>
-  <div class="container" window.onload="getAllMessages">
+  <div class="container">
+    <p class="text-danger"><strong>{{ error }}</strong></p>
     <a href="/message" :id="message.id" v-on:click="show(message)" class="card" v-for="message in messages" :key='message.id'>
       <div class="card-body">
         <h2 class="card-title text-left">{{ message.title }}</h2>
@@ -30,7 +31,6 @@ export default {
       }
   },
   mounted: function() {
-
     axios.get('http://localhost:3000/api/messages', {
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -45,7 +45,7 @@ export default {
     .catch(function(err) {
       console.log(err);
       let container = document.querySelector(".container");
-      container.innerHTML = "Nous n'avons pas réussi à afficher le fil des messages. Vérifier que le serveur fonctionne correctement et rechargez la page"
+      container.innerHTML = "Nous n'avons pas réussi à afficher le fil des messages. Vérifier que vous êtes connectés et que le serveur fonctionne correctement et rechargez la page"
     });
   },
   methods: {
@@ -55,24 +55,29 @@ export default {
       this.getAllCommentaires();    
     },
     getOneMessage : function() {
-      var config = {
-        method: 'get',
-        url: 'http://localhost:3000/api/messages/me',
-        headers: { 
-          Authorization: 'Bearer ' + localStorage.getItem('token'),
-          id : localStorage.getItem('messageId')
+      const connect = localStorage.getItem('token');
+      if(connect != ''){
+        var config = {
+          method: 'get',
+          url: 'http://localhost:3000/api/messages/me',
+          headers: { 
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+            id : localStorage.getItem('messageId')
+          }
         }
+        axios(config)
+        .then(function (response) {
+          const message = response.data;
+          localStorage.setItem('OneMessage', JSON.stringify(message));
+          
+        })
+        .catch(function (error) {
+          console.log(error);
+          alert("impossible d'afficher ce message");
+        });
+      } else {
+        this.error = "Veuillez vous connecter pour avoir accès à cette page";
       }
-      axios(config)
-      .then(function (response) {
-        const message = response.data;
-        localStorage.setItem('OneMessage', JSON.stringify(message));
-        
-      })
-      .catch(function (error) {
-        console.log(error);
-        alert("impossible d'afficher ce message");
-      });
     },
     getAllCommentaires: function() {
       var config = {

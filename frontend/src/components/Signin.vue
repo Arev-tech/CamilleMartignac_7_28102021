@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <p class="text-danger"><strong>{{ error }}</strong></p>
     <div class="row justify-content-center">
         <label class="label" for="email">Saisissez votre adresse email:</label>
         <input autofocus class="input" type="email" id="email" placeholder="Email" v-model="email">
@@ -34,6 +35,7 @@
         username: '',
         password: '',
         bio: '',
+        error: '',
       }
     },
     computed: {
@@ -47,6 +49,11 @@
     },
     methods: {
       createAccount: function() {
+        //eslint-disable-next-line
+        const validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        //eslint-disable-next-line
+        const validPassword = /^(?=.*\d).{4,12}$/;
+        if(this.email.match(validEmail) && this.password.match(validPassword)) {
         axios.post('http://localhost:3000/api/users/register', {
           email: this.email,
           password: this.password,
@@ -62,9 +69,12 @@
           console.log(err);
           alert('impossible de créer un nouvel utilisateur');
         });
-      }
+      } else {
+        this.error = "email ou mot de passe invalide";
       }
     }
+  }
+}
 </script>
 
 <style scoped>
@@ -74,6 +84,7 @@
   border-radius: 20px;
   padding: 0 0 20px 0;
   border: solid 1px white;
+  margin: 20px auto;
 }
 
 .row{
