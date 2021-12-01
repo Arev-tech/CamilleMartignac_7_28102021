@@ -9,7 +9,9 @@
 <ul>
     <li>Se positionner dans le dossier backend</li>
     <li>Exécuter npm intall</li>
-    <li>Une fois toutes les installations faites, exécuter "nodemon server.js"</li>
+    <li>Créer une base de donnée si vous n'en avez pas déjà une pour ce projet</li>
+    <li>Configurer les fichiers ".env.example" et "configExample.json", et les renommer respectivement en ".env" et "config.json"</li>
+    <li>Une fois toutes les installations faites, exécuter "nodemon server.js" ou "node server.js"</li>
     <li>Si tout fonctionne, le message: <br> "Executing (default): SELECT 1+1 AS result<br>Connection has been established successfully.<br>Listening on port 3000"<br> apparaîtra.
 </ul>
 

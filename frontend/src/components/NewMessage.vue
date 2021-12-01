@@ -2,15 +2,15 @@
   <div class="container">
     <p class="error text-danger"><strong>{{ error }}</strong></p>
     <div class="row justify-content-center">
-      <label for="title">Titre:</label>
+      <label for="title">Titre: <em>*</em></label>
       <input required autofocus class="input" type="text" v-model="title" id="title" placeholder="Titre">
     </div>
     <div class="row justify-content-center">
-      <label for="content">Publication: </label>
+      <label for="content">Publication: <em>*</em></label>
       <textarea required class="input" type="text" v-model="content" placeholder="Exprimez-vous" id="content"></textarea>
     </div>
     <div class="row justify-content-center">
-      <label for="image">Choisissez votre image: </label>
+      <label for="image">Choisissez votre image: <em>*</em></label>
       <input required @change="checkSize()" accept="image/*" class="file" type="file" name="image" id="image">
     </div>
     <div class="row justify-content-center">
@@ -116,5 +116,9 @@ label {
     border: solid 0.1px #2c3e50;
     border-radius: 10px;
     color: #2c3e50;
+}
+em{
+  color: red;
+  font-weight: 900;
 }
 </style>

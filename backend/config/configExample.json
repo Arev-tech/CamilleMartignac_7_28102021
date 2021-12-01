@@ -2,8 +2,8 @@
     "development": {
       "username": "username",
       "password": "password",
-      "database": "database nom",
-      "host": "host",
-      "dialect": "dialect"
+      "database": "database name",
+      "host": "host" , [ex: "localhost"]
+      "dialect": "dialect" , [ex: "mysql"]
     }
 }

@@ -2,11 +2,11 @@
   <div class="container">
     <p class="text-danger">{{ error }}</p>
     <div class="row justify-content-center">
-      <label class="label" for="email">Saisissez votre adresse email :</label><br>
+      <label class="label" for="email">Saisissez votre adresse email : <em>*</em></label><br>
       <input required autofocus class="input" type="email" v-model="email" id="email" placeholder="Email">
     </div>
     <div class="row justify-content-center">
-      <label class="label" for="mdp">Saisissez votre mot de passe :</label><br>
+      <label class="label" for="mdp">Saisissez votre mot de passe : <em>*</em></label><br>
       <input required class="input" type="password" v-model="password" placeholder="Mot de passe" id="mdp">
     </div>
     <div class="row justify-content-center">
@@ -94,5 +94,8 @@ label {
     border-radius: 10px;
     color: #2c3e50;
 }
-
+em{
+  color: red;
+  font-weight: 900;
+}
 </style>

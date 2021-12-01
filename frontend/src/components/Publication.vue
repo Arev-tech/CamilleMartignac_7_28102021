@@ -11,7 +11,6 @@
       <p class="card-text">{{ message.content }}</p>
       <div class="card-footer text-muted text-right">Voir les commentaires</div>
     </a>
-    <div class="row">{{ error }}</div>
   </div>
 </template>
 
