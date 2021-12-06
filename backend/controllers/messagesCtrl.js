@@ -29,7 +29,7 @@ module.exports = {
             },
             {
                 model: models.Commentaire,
-                attributes: [ 'commentaire', 'username' ]
+                attributes: [ 'commentaire']
             }]
         }).then(function(messages) {
             if (messages) {
@@ -54,7 +54,7 @@ module.exports = {
             },
             {
                 model: models.Commentaire,
-                attributes: [ 'commentaire', 'username' ]
+                attributes: [ 'commentaire']
             }]
                 
         })
