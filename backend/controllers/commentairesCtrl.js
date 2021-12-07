@@ -82,6 +82,28 @@ module.exports = {
             }
         });
     },
+    deleteCommentaires: function(req,res) {
+        //Authorization
+        const headerAuth = req.headers['Authorization'];
+        const userId = jwtUtils.getUserId(headerAuth);
+
+        //Params
+        const commentaireId = req.headers.id;
+        console.log('USER' + userId);
+        console.log('COM ID' + commentaireId);
+
+        models.Commentaire.destroy({
+            where: { 
+                id: commentaireId
+            }
+        })
+        .then(function(){
+            res.status(200).json({ 'message': 'commentaire deleted' });
+        })
+        .catch (function(err) {
+            res.status(500).json({ 'error': 'commentaire cannot be found'});
+        })
+    },
     getAllCommentaires: function(req, res) {
         const fields  = req.query.fields;
         const limit   = parseInt(req.query.limit);

@@ -17,7 +17,6 @@ dotenv.config();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(helmet());
-app.use(morgan('combined'));
 
 
 
@@ -47,8 +46,8 @@ const limiteur  =  rateLimit ( {
 } ) ;
 
 // s'applique à toutes les demandes authentification
-app.use("/api/users", limiteur) ;
-app.use('/images', express.static(path.join(__dirname, 'images')))
+app.use('/api/users', limiteur);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 //Images
 app.use('/api/users', usersRoutes);
 app.use('/api/messages', messagesRoutes);

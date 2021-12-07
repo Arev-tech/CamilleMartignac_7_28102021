@@ -8,10 +8,11 @@
       <img  class="card-img" :src="message.attachment" alt="gif">
       <p class="card-text">{{ message.content }}</p>
     </div>
-    <p><strong>{{ noComment }}</strong></p>
-    <div class="card-footer" v-for="commentaire in commentaires" :key="commentaire.id">
+    <p class="danger"><strong>{{ noComment }}</strong></p>
+    <div class="card-footer" v-for="commentaire in commentaires" :key="commentaire.id" :id="commentaire.id">
       <p class="titreCommentaire text-muted text-left"><strong>{{ commentaire.User.username }} le {{ commentaire.createdAt.split('T')[0].split('-').reverse()[0] }}/{{ commentaire.createdAt.split('T')[0].split('-').reverse()[1] }}/{{ commentaire.createdAt.split('T')[0].split('-').reverse()[2] }}</strong></p>
       <p class="text-left">{{ commentaire.Commentaire }} </p>
+      <button @click="deleteCom(commentaire)" class="btn btn-danger">Supprimer ce commentaire</button>
     </div>
     <div class="row">
       <input type="text" class="input1 IWB" v-model="commentaire" placeholder="Commentez">
@@ -45,12 +46,42 @@ export default {
       } else {
         return false;
       }
-    }
+    },
   },
   mounted: function() {
     this.getAllCommentaires();
   },
   methods: {
+    deleteCom: function(btn) {
+      if(localStorage.getItem('userId') == btn.UserId){
+        localStorage.setItem('ComId', btn.id);
+        this.deleteCommentaire();
+        localStorage.removeItem('ComId');
+        localStorage.removeItem('Commentaires');
+        window.location.reload();
+      } else {
+        alert("vous n'êtes pas authoriseer à supprimer ce commmentaire");
+      }
+    },
+    deleteCommentaire: function() {
+      var config = {
+        method: 'delete',
+        url: 'http://localhost:3000/api/messages/me/commentaires',
+        headers: { 
+          'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'id': localStorage.getItem('ComId')
+        }
+      };
+      console.log(config);
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    },
     deleteMessage: function() {
       console.log(localStorage.getItem('messageId'));
       var config = {
@@ -114,7 +145,6 @@ export default {
       })
       .catch(function (error) {
         console.log(error);
-
       });
     }
   }
