@@ -197,6 +197,9 @@ export default {
 a{
   text-decoration: none;
 }
+button{
+  margin: 10px;
+}
 .input1{
   width: 55%;
 }

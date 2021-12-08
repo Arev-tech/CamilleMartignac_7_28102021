@@ -19,6 +19,7 @@ module.exports = {
         }
 
         models.Message.findAll({
+            where: { isOk: true },
             order: [(order != null) ? order.split(':') : ['id', 'DESC']],
             attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
             limit: (!isNaN(limit)) ? limit : null,
@@ -130,6 +131,7 @@ module.exports = {
                             UserId: userFound.id,
                             username: userFound.username,
                             attachment: imageUrl,
+                            isOk: true,
                         })
                         .then(function(newMessage) {
                             done(newMessage);

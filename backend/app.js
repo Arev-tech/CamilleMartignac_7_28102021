@@ -17,6 +17,7 @@ dotenv.config();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(helmet());
+app.use(morgan('combined'));
 
 
 
