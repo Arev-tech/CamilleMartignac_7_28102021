@@ -3,7 +3,7 @@
   "username": "[username]",
   "password": "[password]",
   "database": "[database name]",
-  "host": "[host ex: localhost]" ,
-  "dialect": "[dialect ex:mysql]"
+  "host": "[host ex : localhost]" ,
+  "dialect": "[dialect ex: mysql]"
   }
 }

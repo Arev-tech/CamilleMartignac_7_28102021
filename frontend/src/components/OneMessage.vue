@@ -12,7 +12,7 @@
     <div class="card-footer" v-for="commentaire in commentaires" :key="commentaire.id" :id="commentaire.id">
       <p class="titreCommentaire text-muted text-left"><strong>{{ commentaire.User.username }} le {{ commentaire.createdAt.split('T')[0].split('-').reverse()[0] }}/{{ commentaire.createdAt.split('T')[0].split('-').reverse()[1] }}/{{ commentaire.createdAt.split('T')[0].split('-').reverse()[2] }}</strong></p>
       <p class="text-left">{{ commentaire.Commentaire }} </p>
-      <button @click="deleteCom(commentaire)" class="btn btn-danger">Supprimer ce commentaire</button>
+      <button @click="deleteCom(commentaire)" class="btn btn-danger com" v-bind:class="{'disabled': !isYourCom(commentaire)}">Supprimer ce commentaire</button>
     </div>
     <div class="row">
       <input type="text" class="input1 IWB" v-model="commentaire" placeholder="Commentez">
@@ -64,6 +64,14 @@ export default {
     this.getAllCommentaires();
   },
   methods: {
+    isYourCom: function(commentaire){
+      if(localStorage.getItem('userId') == commentaire.UserId){
+        return true;
+      }
+      else{
+        return false;
+      }
+    },
     maskMessage: function() {
       var config = {
         method: 'post',
