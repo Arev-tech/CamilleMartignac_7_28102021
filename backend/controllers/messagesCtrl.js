@@ -69,55 +69,25 @@ module.exports = {
             return res.status(500).json(err);
         });
     },
-    updateMessage : function(req,res) {
-        // Authorization
-        var headerAuth = req.headers['authorization'];
-        var userId = jwtUtils.getUserId(headerAuth);
-
-        const title = req.body.title;
-        const content = req.body.content;
-        const messageId = req.body.id;
-        let imageUrl = '';
-
-        models.Message.findOne({
-            attributes : ['title', 'content', 'id', 'attachment'],
-            where : { id: messageId }
-        })
-        .then(function(messageFound) {
-            if(messageFound) {
-                if(userId == messageFound.userId) {
-                    if (req.file) {
-                        ampleFile = req.files.sampleFile;
-                        ima = __dirname + '/image/' + sampleFile.name;
-                        if (messageFound.attachment) {
-                            const filename = messageFound.attachment.split("/files")[1];
-                            fs.unlink(`files/${filename}`, (err) => {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                console.log(`Deleted file: files/${filename}`);
-                            }
-                            })
-                        }
+    Maskmessage : function(req,res) {
+        const messageId = req.headers.messageid;
+        
+        models.Message.update(
+            {
+                isOk: false
+            },
+            {
+                where : 
+                    { 
+                        id: messageId
                     }
-                    messageFound.update({
-                        title : (title ? title: messageFound.title),
-                        content: (content ? content: messageFound.content)
-                    })
-                    .then(function(messageFound) {
-                        return res.status(201).json({ messageFound });
-                    })
-                    .catch(function(err) {
-                        return res.status(500).json({ 'error' : 'cannot update message' });
-                    });
-                }
             }
-            else {
-                return res.status(404).json({ 'error' : 'cannot update message' });
-            }
+        )
+        .then(function(messageFound) {
+            res.status(200).json(messageFound.isOk);
         })
         .catch(function(err) {
-            return res.status(404).json({ 'error' : 'cannot find message' });
+            res.status(400).json(err);
         });
     },
     createMessage: function(req, res) {

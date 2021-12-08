@@ -51,6 +51,7 @@
         .then(function(res) {
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('userId', res.data.userId);
+          localStorage.setItem('isAdmin', res.data.isAdmin);
           router.push('/feed');
         })
         .catch(function(err) {

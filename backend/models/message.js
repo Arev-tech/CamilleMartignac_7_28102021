@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     content: DataTypes.STRING,
     attachment: DataTypes.STRING,
+    isOk : DataTypes.BOOLEAN,
   }, {
     classMethods: {
       associate: function(models) {

@@ -18,7 +18,10 @@
       <input type="text" class="input1 IWB" v-model="commentaire" placeholder="Commentez">
       <input type="button" class="input2 IWB" @click="newCommentaire" value="Envoyez">
     </div>
-    <button @click="deleteMessage" class="btn btn-danger" :class="{'disabled' : !isOwner}">Supprimer ce message</button>
+    <div>
+      <button @click="deleteMessage" class="btn btn-danger" :class="{'disabled' : !isOwner}">Supprimer ce message</button>
+      <button @click="maskMessage" class="btn btn-danger" :class="{'disabled' : !isAdmin}">Masquer ce message</button>
+    </div>
   </div>
 </template>
 
@@ -47,11 +50,40 @@ export default {
         return false;
       }
     },
+    isAdmin: function() {
+      if(localStorage.getItem('isAdmin') == 'true') {
+        console.log('ok');
+        return true;
+      } else {
+        console.log('error');
+        return false;
+      }
+    }
   },
   mounted: function() {
     this.getAllCommentaires();
   },
   methods: {
+    maskMessage: function() {
+      var config = {
+        method: 'post',
+        url: 'http://localhost:3000/api/messages/me',
+        headers: { 
+          'Authorization': 'Bearer ' + localStorage.getItem('token'), 
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'messageid': localStorage.getItem('messageId')
+        }
+      };
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        alert('message masqué');
+        router.push('/feed');
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    },
     deleteCom: function(btn) {
       if(localStorage.getItem('userId') == btn.UserId){
         localStorage.setItem('ComId', btn.id);
