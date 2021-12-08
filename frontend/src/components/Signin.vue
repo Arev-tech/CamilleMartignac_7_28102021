@@ -6,11 +6,11 @@
         <input autofocus class="input" type="email" id="email" placeholder="Email" v-model="email">
     </div>
     <div class="row justify-content-center">
-        <label class="label" for="mdp">Saisissez votre mot de passe : <em>*</em></label>
+        <label class="label" for="mdp">Saisissez votre mot de passe : <em>*</em><br>(Le mot de passe doit contenir entre 8 et 12 caractères,<br> dont une majuscule et un chiffre)</label>
         <input class="input" type="password" id="mdp" placeholder="Mot de passe" v-model="password">
     </div>
     <div class="row justify-content-center">
-        <label class="label" for="username">Choisissez un pseudo : <em>*</em><br>(Le mot de passe doit contenir entre 8 et 12 caractères,<br> dont une majuscule et un chiffre)</label>
+        <label class="label" for="username">Choisissez un pseudo : <em>*</em></label>
         <input class="input" id="username" placeholder="Pseudo" v-model="username">
     </div>
     <div class="row justify-content-center">

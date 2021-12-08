@@ -100,7 +100,7 @@ export default {
         localStorage.removeItem('Commentaires');
         window.location.reload();
       } else {
-        alert("vous n'êtes pas authoriseer à supprimer ce commmentaire");
+        alert("vous n'êtes pas authoriser à supprimer ce commmentaire");
       }
     },
     deleteCommentaire: function() {
